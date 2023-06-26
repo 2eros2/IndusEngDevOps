@@ -1,0 +1,68 @@
+CREATE table albumes( 
+        Id INTEGER PRIMARY KEY AUTOINCREMENT
+      , Artista TEXT NOT NULL
+      , Album TEXT NOT NULL
+      , Genero TEXT NOT NULL
+      , Soporte TEXT NOT NULL
+      , Precio INTEGER NOT NULL
+      );
+	
+INSERT INTO albumes (Artista, Album, Genero, Soporte, Precio) 
+VALUES 
+('A-HA','Memorial Beach','Rock','Vinilo',1900),
+('A-HA','Cast In Steel','Rock','Vinilo',800),
+('AC/DC','Who Made Who','Rock','CD',2900),
+('AC/DC','Fly On The Wall','Rock','Vinilo',500),
+('ARCTIC MONKEYS','Whatever People Say That Im','Rock','Vinilo',300),
+('Badu Erykah','Mama´s Gun','Rock','Cassette',900),
+('Badu Erykah','Baduizm','Rock','CD',900),
+('Bjork','Selma Songs','Rock','CD',600),
+('Bjork','Biophilia','Rock','Cassette',1900),
+('Chemical Brothers','We Are The Night','Electronica','CD',1700),
+('Chemical Brothers','Dig Your Own Hole','Electronica','CD',2900),
+('Chet Baker','Complete Recordings ','Jazz','Vinilo',1700),
+('Chet Baker','Chet Baker Sings','Jazz','CD',1900),
+('Daft Punk','The Many Faces Of - 3 CDs','Electronica','CD',500),
+('Daft Punk','Random Access Memories','Electronica','CD',900),
+('Davis Miles','Walkin','Jazz','CD',1500),
+('Davis Miles','In A Silent Way','Jazz','Vinilo',1500),
+('Divididos','Divididos','Nacional','Vinilo',900),
+('Divididos','Otro Le Travaladna','Nacional','CD',1000),
+('El Mató a un Policía Motorizado','Un Millón de Euros','Nacional','Vinilo',400),
+('El Mató a un Policía Motorizado','Navidad de Reserva','Nacional','Vinilo',700),
+('El Mató a un Policía Motorizado','El Mató a un Policía Motorizado','Nacional','Cassette',1500),
+('Foo Fighters','There Is Nothing Left To Lose','Rock','CD',900),
+('Gorillaz','The Fall','Rock','CD',1000),
+('Gorillaz','The Now Now','Rock','Cassette',500),
+('Jimenez Carlitos La Mona','Cuarteto es la Mona','Cuarteto','CD',2500),
+('Jimenez Carlitos La Mona','El Agite','Cuarteto','CD',1200),
+('Jimenez Carlitos La Mona','El Vicio de la Mona','Cuarteto','Vinilo',900),
+('Jimenez Carlitos La Mona','Selección Privada 72','Cuarteto','CD',1200),
+('Jovenes Pordioseros','Vicio','Nacional','CD',1900),
+('Jovenes Pordioseros','Sangre','Nacional','CD',800),
+('Jovenes Pordioseros','Probame','Nacional','CD',500),
+('Motörhead','Bastards','Metal','Vinilo',500),
+('Mötorhead','Welcome to the Bear Trap','Metal','Vinilo',1500),
+('Mötorhead','Live at Brixton','Metal','CD',2500),
+('New Order','Waiting For The Sirens Call','Electronica','Vinilo',3000),
+('New Order','Brotherhood','Electronica','Vinilo',3500),
+('New Order','Movement','Electronica','Cassette',3500),
+('Nirvana','Nevermind','Rock','CD',3500),
+('Nirvana','In Bloom Collection','Rock','CD',3900),
+('Pandolfo Palo','Antojo','Nacional','Cassette',3500),
+('Pandolfo Palo','A traves de los sueños','Nacional','CD',2900),
+('Patricio Rey Y Sus Redonditos De Ricota','Ultimo Bondi A Finisterre','Nacional','CD',3300),
+('Patricio Rey Y Sus Redonditos De Ricota','Momo Sampler','Nacional','Vinilo',1900),
+('Pearl Jam','Binaural','Rock','CD',200),
+('Pearl Jam','Riot Act','Rock','Vinilo',400),
+('Pink Floyd','Obscured by Clouds','Rock','Vinilo',400),
+('Pixies','Trompe Le Monde','Rock','CD',500),
+('Primus','Green Naugahyde','Rock','Vinilo',700),
+('Rage Against The Machine','The Battle of L.A','Rock','Vinilo',500),
+('Ramones The','Mondo Bizarro','Rock','Cassette',3900),
+('Ramones The','Pleasent Dreams','Rock','CD',1800),
+('Soda Stereo','Canción Animal','Nacional','CD',1900),
+('Soda Stereo','Sueño Stereo','Nacional','Cassette',900),
+('ZZ Top','Eliminator','Rock','CD',2900),
+('ZZ Top','Tejas','Rock','CD',2900),
+('ZZ Top','Fandango','Rock','Vinilo',2900);
