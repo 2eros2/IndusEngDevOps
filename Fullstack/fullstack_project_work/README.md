@@ -1,3 +1,6 @@
+Project descriptión: This was a college project to test our skills as FullStack students.
+
+Installation instructions:
 To run this project I recommend deleting all the files named package-lock.json
 1 - Then move to the backend directory and write in the console the code 'npm install' to install all the modules.
 2 - Repeat step 1 with the frontend directory
