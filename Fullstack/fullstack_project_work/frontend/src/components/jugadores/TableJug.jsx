@@ -1,5 +1,5 @@
 import React from 'react'
-
+import moment from 'moment'
 export default function TableJug({ items, onClickDelete, onClickNuevo }) {
     return (
         <div className="card">
@@ -31,7 +31,7 @@ export default function TableJug({ items, onClickDelete, onClickNuevo }) {
                                         <tr key={index}>
                                             <td>{item.IdJugador}</td>
                                             <td>{item.Nombre}</td>
-                                            <td>{item.FechaNac}</td>
+                                            <td>{moment(item.FechaNac).format("DD/MM/YYYY")}</td>
                                             <td>
                                                 <div className='row'>
                                                     <button onClick={() => onClickNuevo(item)}
@@ -40,6 +40,7 @@ export default function TableJug({ items, onClickDelete, onClickNuevo }) {
                                                             backgroundColor: 'white',
                                                             color: 'purple'
                                                         }}
+                                                        // disabled= {item.eliminado == 1}
                                                     >
                                                         <i className="fas fa-pencil"></i>
                                                     </button>
@@ -47,7 +48,7 @@ export default function TableJug({ items, onClickDelete, onClickNuevo }) {
                                                         className='col-2 btn p-1'
                                                         style={{
                                                             backgroundColor: 'white',
-                                                            color: 'purple'                                                        }}
+                                                            color: 'purple' }}
                                                     >
                                                         <i className="fas fa-trash"></i>
                                                     </button>

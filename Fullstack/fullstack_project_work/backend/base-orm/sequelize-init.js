@@ -31,7 +31,7 @@ const equipos = sequelize.define(
 
         },
         FechaFun:{
-            type: DataTypes.DATEONLY,
+            type: DataTypes.STRING,
             allowNull: false,
             validate:{
                 notEmpty:{
@@ -78,9 +78,9 @@ const jugadores = sequelize.define(
             }
 
         },
-        //esta en formato yy-mm-dd
+        // esta en formato yy-mm-dd
         FechaNac:{
-            type: DataTypes.DATEONLY,
+            type: DataTypes.STRING,
             allowNull: false,
             validate:{
                 notEmpty:{
@@ -257,7 +257,6 @@ const partidos = sequelize.define(
                 },
             },
         },
-        
     },
 
         {

@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
-import ListaPartidos from './ListarPartidos';
-import BuscarPartidos from './BuscarPartidos';
-import RegistroPartidos from './RegistroPartido';
-import { partidosService } from '../../services/partidos.services';
-
+import React, { useState, useEffect } from 'react';
 import moment from "moment";
+import BuscarPartidos from './BuscarPartidos';
+import ListaPartidos from './ListaPartidos';
+import RegistroPartidos from './RegistroPartidos';
+import { partidosService } from '../../services/partidos.services';
+import { estadiosService } from '../../services/estadios.service';
+import { getEquipos } from '../../services/equipos.service';
 import modalDialogService from '../../services/ModalDialog';
 
 
@@ -19,13 +20,9 @@ function Partidos() {
   const [AccionABMC, setAccionABMC] = useState("L");
 
   const [arbitro, setArbitro] = useState("");
-  const [Activo, setActivo] = useState("");
 
   const [partidos, setPartidos] = useState(null);
   const [partido, setPartido] = useState(null); // usado en BuscarporId(Modificar, Consultar)
-  const [RegistrosTotal, setRegistrosTotal] = useState(0);
-  const [Pagina, setPagina] = useState(1);
-  const [Paginas, setPaginas] = useState([]);
   
   const [Equipos, setEquipos] = useState(null);
   const [Estadios, setEstadios] = useState(null);
@@ -33,30 +30,31 @@ function Partidos() {
 
   // cargar Partidos
  
-
-
-
-
-  async function Buscar(_pagina) {
-    if (_pagina && _pagina !== Pagina) {
-      setPagina(_pagina);
+ useEffect(() => {
+    async function BuscarEstadios() {
+      let data = await estadiosService.Buscar();
+      setEstadios(data);
     }
-    else {
-      _pagina = Pagina;
+    BuscarEstadios();
+  }, []);
+
+  useEffect(() => {
+    async function BuscarEquipos() {
+      let data = await getEquipos();
+      setEquipos(data);
     }
-    const data = await partidosService.Buscar(arbitro, Activo, _pagina);
-    setPartidos(data.partidos);
-    setRegistrosTotal(data.RegistrosTotal);
-    const arrPaginas = [];
-    for (let i = 1; i <= Math.ceil(data.RegistrosTotal / 10); i++) {
-      arrPaginas.push(i);
-    }
-    setPaginas(arrPaginas);
+    BuscarEquipos();
+  }, []);
+
+
+  async function Buscar() {
+    //modalDialogService.BloquearPantalla(true);
+    const data = await partidosService.Buscar(arbitro);
+    setPartidos(data);
   }
 
-
-  async function BuscarPorId(partido, accionABMC) {
-    const data = await partidosService.BuscarPorId(partido);
+  async function BuscarPorId(IdPartido, accionABMC) {
+    const data = await partidosService.BuscarPorId(IdPartido);
     setPartido(data);
     setAccionABMC(accionABMC);
   }
@@ -67,10 +65,6 @@ function Partidos() {
   }
 
   function Modificar(partido) {
-    if (!partido.Activo) {
-      modalDialogService.Alert("No puede modificarse un registro Inactivo.");
-      return;
-    }
     BuscarPorId(partido, "M");
   }
 
@@ -83,27 +77,20 @@ function Partidos() {
       fecha: moment(new Date()).format("YYYY-MM-DD"),
       IdEstadio: null,
       arbitro: null,
-      Activo: true,
     });
   }
-  function Imprimir() {
-    modalDialogService.Alert("En Desarrollo...");
+
+  async function Eliminar(partido) {
+
+    await partidosService.deletePartido(partido);
+    setTimeout(() => {
+      alert(
+        "Registro eliminado correctamente."
+      );
+    }, 0)
+    await Buscar()
+    
   }
-
-  async function ActivarDesactivar(partido) {
-    modalDialogService.Confirm(
-      "Esta seguro que quiere " +
-      (partido.Activo ? "desactivar" : "activar") +
-      " el registro?",
-      undefined,
-      undefined,
-      undefined,
-      async () => {
-        await partidosService.ActivarDesactivar(partido);
-        await Buscar();
-      }
-    );}
-
 
     async function Grabar(partido) {
       try {
@@ -129,36 +116,35 @@ function Partidos() {
         <div className="tituloPagina">
           <h1>Partidos X Arbitro</h1> <small>{TituloAccionABMC[AccionABMC]}</small>
         </div>
-        {AccionABMC === "L" && <BuscarPartidos
+        {AccionABMC === "L" && (
+        <BuscarPartidos
           arbitro={arbitro}
           setArbitro={setArbitro}
-          Activo={Activo}
-          setActivo={setActivo}
           Buscar={Buscar}
           Agregar={Agregar}
-        />}
+        />)}
         {/* Tabla de resutados de busqueda y Paginador */}
-        {AccionABMC === "L" && partidos?.lenght > 0 && <ListaPartidos
+        {AccionABMC === "L" && partidos?.length > 0 && (
+        <ListaPartidos
           {...{
             partidos,
+            Equipos,
+            Estadios,
             Consultar,
             Modificar,
-            ActivarDesactivar,
-            Imprimir,
-            Pagina,
-            RegistrosTotal,
-            Paginas,
+            Eliminar,
             Buscar,
           }}
-        />}
-        {AccionABMC === "L" && partidos?.lenght === 0 && <div className="alert alert-info mensajesAlert">
+        />)}
+        {AccionABMC === "L" && partidos?.length === 0 && <div className="alert alert-info mensajesAlert">
           <i className="fa fa-exclamation-sign"></i>
           No se encontraron registros...
         </div>}
         {/* Formulario de alta/modificacion/consulta */}
-        {AccionABMC !== "L" && <RegistroPartidos
+        {AccionABMC !== "L" && (
+        <RegistroPartidos
           {...{ AccionABMC, Equipos, Estadios, partido, Grabar, Volver }}
-        />}
+        />)}
       </div>
     );
   }

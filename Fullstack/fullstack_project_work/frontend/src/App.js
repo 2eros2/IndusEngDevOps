@@ -6,8 +6,10 @@ import { Inicio } from './components/Inicio';
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Jugadores from './components/jugadores/Jugadores';
 import Equipos from './components/Equipos/Equipos';
-import Estadios from './components/estadios/Estadios';
+import { Estadios } from './components/estadios/Estadios';
 import { Partidos } from './components/Partidos/Partidos';
+import ModalDialog from './components/ModalDialog';
+
 
 
 
@@ -15,6 +17,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
+        {/* <ModalDialog/> */}
         <div className="ClassInicio">
         
             <Menu />
@@ -38,4 +41,3 @@ function App() {
 }
 
 export default App; 
-

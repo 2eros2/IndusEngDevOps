@@ -28,7 +28,7 @@ router.post('/api/jugadores/', async (req, res) => {
         let data = await db.jugadores.create({
             Nombre: req.body.Nombre,
             FechaNac: req.body.FechaNac,
-            IDEquipo: req.body.IDEquipo
+            // IDEquipo: req.body.IDEquipo
         });
         res.status(200).json(data.dataValues)
     }catch (err){
@@ -45,7 +45,7 @@ router.post('/api/jugadores/', async (req, res) => {
 })
 
 router.put('/api/jugadores/:id', async (req, res) => {
-    if(notNumber(req.params.id, res)) return;
+    // if(notNumber(req.params.id, res)) return;
     try {
         let jugador = await db.jugadores.update(
             {
@@ -65,6 +65,7 @@ router.put('/api/jugadores/:id', async (req, res) => {
         }
     }
 })
+
 
 
 router.delete('/api/jugadores/:id', async (req, res) => {

@@ -7,11 +7,17 @@ const { Op ,ValidationError, where } = require('sequelize');
 
 router
     .get('/api/partidos', async function(req,res,next){
-        let data = await db.partidos.findAll({
-            attributes:["IdPartido","equipo_local_id","equipo_visitante_id","fecha","arbitro","IdEstadio"],
-        });
-        res.json(data);
-});
+      let where = {};
+      if (req.query.arbitro != undefined && req.query.arbitro !== "") {
+        where.arbitro = {
+          [Op.like]: "%" + req.query.arbitro + "%",
+        };}
+      let data = await db.partidos.findAll({
+          attributes: ["IdPartido", "equipo_local_id", "equipo_visitante_id", "fecha", "arbitro","IdEstadio"],
+          where,
+      });
+      res.json(data);
+  });
 router
     .get("/api/partidos/:id", async function(req, res, next) {
     let data = await db.partidos.findOne({
@@ -33,7 +39,7 @@ router
           equipo_visitante_id: req.body.equipo_visitante_id,
           fecha: req.body.fecha,
           arbitro: req.body.arbitro,
-          IdEstadio: req.body.IdEstadio,
+          IdEstadio: req.body.IdEstadio
         });
         res.status(200).json(data.dataValues);
       } catch(err){
@@ -57,7 +63,7 @@ router
             "equipo_visitante_id",
             "fecha",
             "arbitro",
-            "IdEstadio",
+            "IdEstadio"
           ],
           where: { IdPartido: req.params.id},
         });
@@ -69,7 +75,7 @@ router
         partido.equipo_visitante_id = req.body.equipo_visitante_id;
         partido.fecha = req.body.fecha;
         partido.arbitro = req.body.arbitro;
-        partido.IdEstadio = req.body.IdEstadio;
+        partido.IdEstadio = req.body.IdEstadio
         await partido.save(); 
         res.sendStatus(200);
       } catch(err){

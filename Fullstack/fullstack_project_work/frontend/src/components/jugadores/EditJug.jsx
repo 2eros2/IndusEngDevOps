@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import moment from 'moment'
 
 export default function EditJugadores({ onCancelar, onConfirmar, jugador }) {
     const { register, handleSubmit, formState: { errors } } = useForm({ values: jugador });
+    
 
     return (
         <div>
@@ -21,13 +23,13 @@ export default function EditJugadores({ onCancelar, onConfirmar, jugador }) {
                             {errors.Nombre && <>{errors.Nombre.message}</>}
                         </div>
                         <div className="form-group">
-                            <label htmlFor="fechaNac">Fecha Nacimiento:</label>
+                            <label htmlFor="FechaNac">Fecha Nacimiento:</label>
                             <input
-                                type="date"
+                                type="date" //dd-mm-yy
                                 className="form-control"
                                 id="FechaNac"
                                 {...register("FechaNac", {
-                                    required: { value: true, message: "FechaNac es requerido" },
+                                    required: { value: true, message: "Fecha Nac es requerido" },
                                 })}
                             />
                             {errors.FechaNac && <>{errors.FechaNac.message}</>}

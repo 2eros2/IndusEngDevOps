@@ -36,6 +36,7 @@ async function deleteJugador(id) {
     let response = [];
     try {
         response = await axios.delete(`${url}/${id}`);
+        console.log(response)
     } catch (error) {
         console.error(error)
         return false;
@@ -46,15 +47,23 @@ async function saveJugador(payload) {
     let response = [];
     if(payload.IdJugador){
         try {
-            response = await axios.put(url, payload);
+            console.log(payload)
+            // console.log(id)
+            response = await axios.put(`${url}/${payload.IdJugador}`, payload);
+            console.log(response)
             return response;
+            
         } catch (error) {
             console.error(error)
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
             return false;
         }
     }else{
         try {
             response = await axios.post(url, payload);
+            console.log(response)
             return response;
         } catch (error) {
             console.error(error)
@@ -64,3 +73,4 @@ async function saveJugador(payload) {
 }
 
 export { getJugadores, getJugadoresPorId, deleteJugador, saveJugador}
+

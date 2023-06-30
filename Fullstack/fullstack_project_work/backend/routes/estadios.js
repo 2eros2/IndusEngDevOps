@@ -56,7 +56,7 @@ router.put('/api/estadios/:id', async (req, res) => {
         let estadio = await db.estadios.update(
             {
                 Nombre: req.body.Nombre,
-                FechaCreacion: req.body.Creacion,
+                FechaCreacion: req.body.FechaCreacion,
                 IdEstadio: req.body.IdEstadio        
             },
             {where: { IdEstadio: req.params.id}}

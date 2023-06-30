@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Modal from "react-bootstrap/Modal";
-import modalDialogService from ".././services/ModalDialog";
+import { Modal } from 'react-bootstrap';
+import modalDialogService from "../services/ModalDialog";
 
 function ModalDialog() {
   const [mensaje, setMensaje] = useState("");
@@ -12,10 +12,11 @@ function ModalDialog() {
   const [tipo, setTipo] = useState("");
 
   const handleAccionBoton1 = () => {
-    if (accionBoton1) accionBoton1();
+    if (accionBoton1) {
+      accionBoton1();
+    }
     setMensaje((x) => (x = ""));
   };
-
   const handleAccionBoton2 = () => {
     if (accionBoton2) {
       accionBoton2();
@@ -46,17 +47,16 @@ function ModalDialog() {
   }
 
   useEffect(() => {
-    // Suscribirse al servicio modalDialogService al iniciar el componente
+    //suscribirse al servicio modalDialogService al iniciar el componente
     modalDialogService.subscribeShow(Show);
     return () => {
-      // Desuscribirse al servicio modalDialogService al desmontar el componente
+      //desuscribirse al servicio modalDialogService al desmontar el componente
       modalDialogService.subscribeShow(null);
     };
   }, []);
 
   let classHeader = "";
   let faIcon = "";
-
   switch (tipo) {
     case "success":
       classHeader = "bg-success";
@@ -95,6 +95,7 @@ function ModalDialog() {
         >
           <Modal.Title>{titulo}</Modal.Title>
         </Modal.Header>
+
         <Modal.Body style={{ fontSize: "1.2em" }}>
           {mensaje === "BloquearPantalla" ? (
             <div className="progress">
@@ -117,6 +118,7 @@ function ModalDialog() {
             </p>
           )}
         </Modal.Body>
+
         <Modal.Footer>
           {boton1 !== "" && (
             <button

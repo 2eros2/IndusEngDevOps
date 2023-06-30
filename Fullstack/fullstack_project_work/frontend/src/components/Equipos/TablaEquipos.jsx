@@ -1,5 +1,5 @@
 import React from 'react'
-
+import moment from 'moment'
 export default function TablaEquipos({ items, onClickDelete, onClickNuevo }) {
     return (
         <div className="card">
@@ -31,7 +31,7 @@ export default function TablaEquipos({ items, onClickDelete, onClickNuevo }) {
                                         <tr key={index}>
                                             <td>{item.IdEquipo}</td>
                                             <td>{item.Nombre}</td>
-                                            <td>{item.FechaFun}</td>
+                                            <td>{moment(item.FechaFun).format("DD/MM/YYYY")}</td>
                                             <td>
                                                 <div className='row'>
                                                     <button onClick={() => onClickNuevo(item)}

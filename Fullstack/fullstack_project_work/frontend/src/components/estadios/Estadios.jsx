@@ -1,74 +1,143 @@
-import React, { useEffect, useState } from 'react'
-import {getEstadios, deleteEstadio, saveEstadio} from '../../services/estadios.services'
-import EditEstadios from './EditEstadios';
-import Tabla from './Tabla';
-import FiltroEstadios from './FiltroEstadios';
+import React, { useState, useEffect } from "react";
+import moment from "moment";
+import { estadiosService } from "../../services/estadios.service";
 
-export default function Estadios() {
-  const [filas, setFilas] = useState([]);
-  const [action, setAction] = useState('C');
-  const [estadio, setEstadio] = useState(null);
+import EstadiosBuscar from "./EstadiosBuscar";
+import EstadiosListado from "./EstadiosListado";
+import EstadiosRegistro from "./EstadiosRegistro";
 
+
+function Estadios() {
+  const TituloAccionABMC = {
+    A: "(Agregar)",
+    B: "(Eliminar)",
+    M: "(Modificar)",
+    C: "(Consultar)",
+    L: "(Listado)",
+  };
+  const [AccionABMC, setAccionABMC] = useState("L");
+
+  const [Nombre, setNombre] = useState("");
+
+  const [Items, setItems] = useState(null);
+  const [Item, setItem] = useState(null); // usado en BuscarporId (Modificar, Consultar)
+  const [RegistrosTotal, setRegistrosTotal] = useState(0);
+
+  // cargar al "montar" el componente, solo la primera vez (por la dependencia [])
   useEffect(() => {
-    cargarEstadios()
-  }, [])
+    async function BuscarEstadios() {
+      let data = await estadiosService.Buscar();
+      setItems(data);
+    }
+    BuscarEstadios();
+  }, []);
 
+  async function Buscar() {
 
-  const cargarEstadios = async function (filtro) {
-    const estadios = await getEstadios(filtro)
-    setFilas(estadios.map((element) => {
-      return {
-        IdEstadio: element.IdEstadio,
-        Nombre : element.Nombre,
-        FechaCreacion: element.FechaCreacion,
-      }
-    }))
-  }
+    const data = await estadiosService.Buscar(Nombre,); 
+    setItems(data);
+    setRegistrosTotal(data.RegistrosTotal);
 
-  const onConsultar = (filtro) => {
-    console.log(filtro)
-    setAction('C')
-    cargarEstadios(filtro)
-  }
-  const onNuevo = (estadio) => {
-    setEstadio(estadio)
-    setAction('N')
-  }
-  const onCancelar = () => {
-    setAction('C')
-  }
-
-  const onConfirmar = async (estadio) => {
-    console.log(estadio)
-    await saveEstadio(estadio);
-    await cargarEstadios()
-    setAction('C')
-  }
-
-  const onDelete = async(IdEstadio) => {
-    await deleteEstadio(IdEstadio)
-    await cargarEstadios()
-    setAction('C')
   }
 
 
+  async function BuscarPorId(item, accionABMC) {
+    const data = await estadiosService.BuscarPorId(item);
+    setItem(data);
+    setAccionABMC(accionABMC);
+  }
+  
+
+  function Consultar(item) {
+    BuscarPorId(item, "C"); // paso la accionABMC pq es asincrono la busqueda y luego de ejecutarse quiero cambiar el estado accionABMC
+  }
+  function Modificar(item) {
+    BuscarPorId(item, "M"); // paso la accionABMC pq es asincrono la busqueda y luego de ejecutarse quiero cambiar el estado accionABMC
+  }
+
+  function Agregar() {
+    setAccionABMC("A");
+    setItem({
+      IdEstadio: 0,
+      Nombre: null,
+      FechaCracion: moment(new Date()).format("YYYY-MM-DD"),
+    });
+  }
+
+  async function Eliminar(item) {
+
+    await estadiosService.deleteEstadios(item);
+    setTimeout(() => {
+      alert(
+        "Registro eliminado correctamente."
+      );
+    }, 0)
+    await Buscar()
+    
+  }
+
+  async function Grabar(item) {
+    // agregar o modificar
+    try
+    {
+      await estadiosService.Grabar(item);
+    }
+    catch (error)
+    {
+      alert(error?.response?.data?.message ?? error.toString())
+      return;
+    }
+    await Buscar();
+    Volver();
+  
+    setTimeout(() => {
+      alert(
+        "Registro " +
+          (AccionABMC === "A" ? "agregado" : "modificado") +
+          " correctamente."
+      );
+    }, 0);
+  }
+  
+  
+
+  // Volver/Cancelar desde Agregar/Modificar/Consultar
+  function Volver() {
+    setAccionABMC("L");
+  }
   return (
-    <>
-      {action === 'C' && (
-        <div>
-          <FiltroEstadios onConsultar={onConsultar}></FiltroEstadios>
-          <Tabla items={filas} onClickNuevo={onNuevo} onClickDelete={onDelete}></Tabla>
-        </div>
-      )}
+    <div>
+      <div className="tituloPagina">
+        Estadios <small>{TituloAccionABMC[AccionABMC]}</small>
+      </div>
 
-      {
-        action === 'N' && (
-          <div>
-            { <EditEstadios  onCancelar={onCancelar} onConfirmar={onConfirmar} estadio={estadio}/> }
-          </div>
-        )
-      }
+      {AccionABMC === "L" &&<EstadiosBuscar
+        Nombre={Nombre}
+        setNombre={setNombre}
+        Buscar={Buscar}
+        Agregar={Agregar}
+      />}
 
-    </>
-  )
+      {/* Tabla de resutados de busqueda y Paginador */}
+      {AccionABMC === "L" && Items?.length > 0 && <EstadiosListado
+        {...{
+          Items,
+          Consultar,
+          Modificar,
+          Eliminar,
+        }}
+      />}
+
+        {AccionABMC === "L" && Items?.length === 0 && <div className="alert alert-info mensajesAlert">
+        <i className="fa fa-exclamation-sign"></i>
+        No se encontraron registros...
+      </div> }
+
+      {/* Formulario de alta/modificacion/consulta */}
+      {AccionABMC !== "L" &&  <EstadiosRegistro
+        {...{ AccionABMC, Item, Grabar, Volver }}
+      /> }
+    </div>
+  );
 }
+export { Estadios };

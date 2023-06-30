@@ -12,10 +12,12 @@ export default function RegistroPartidos({
     const {
         register,
         handleSubmit,
-        formState: { errors, touchedFields, isValid, isSubmitted },} = useForm({ values: partido });
+        formState: { errors, touchedFields, isValid, isSubmitted },
+    } = useForm({ values: partido });
     
-    const onSubmit = (data) => { Grabar(data); };
-
+    const onSubmit = (data) => { 
+        Grabar(data); 
+    };
     if (!partido) return null;
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -156,26 +158,6 @@ export default function RegistroPartidos({
                                     {errors?.arbitro?.message}
                                 </div>
                             )}
-                        </div>
-                    </div>
-                    {/* campo Activo */}
-                    <div className="row">
-                        <div className="col-sm-4 col-md-3 offset-md-1">
-                            <label className="col-form-label" htmlFor="Activo">
-                                Activo<span className="text-danger">*</span>:
-                            </label>
-                        </div>
-                        <div className="col-sm-8 col-md-6">
-                            <select
-                                name="Activo"
-                                className="form-control"
-                                value={partido?.Activo}
-                                disabled
-                            >
-                                <option value={null}></option>
-                                <option value={false}>NO</option>
-                                <option value={true}>SI</option>
-                            </select>
                         </div>
                     </div>
                 </fieldset>

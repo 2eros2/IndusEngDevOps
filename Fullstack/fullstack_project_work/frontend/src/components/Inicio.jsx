@@ -13,11 +13,11 @@ function Inicio() {
         <h1>TPI Desarrollo de software</h1>
         <h3>Integrantes: 
           <ol>
-            <li>Ferrazo</li>
-            <li>Gago</li>
-            <li>Paglia</li>
-            <li>Perucca Eros 92934</li>
-            <li>Zavala</li>
+            <li>Ferrazzo Franco 82974   </li>
+            <li>Gago Mauricio 92290     </li>
+            <li>Paglia Francisco 88688  </li>
+            <li>Perucca Eros 92934      </li>
+            <li>Zavala Francisco 87464  </li>
           </ol>
         </h3>
         <p>Porfavor utilize nuestra barra superior para navegar</p>

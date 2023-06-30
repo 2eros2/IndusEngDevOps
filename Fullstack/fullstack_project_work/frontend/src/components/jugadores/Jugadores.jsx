@@ -17,10 +17,15 @@ export default function Jugadores() {
   const cargarJugadores = async function (filtro) {
     const jugadores = await getJugadores(filtro)
     setFilas(jugadores.map((element) => {
+      const dateObj = new Date(element.FechaNac)
+      const year = dateObj.getFullYear();
+      const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+      const day = String(dateObj.getDate()).padStart(2, '0');
+      const formattedDateTime = `${year}-${month}-${day}`
       return {
         IdJugador: element.IdJugador,
         Nombre : element.Nombre,
-        FechaNac: element.FechaNac,
+        FechaNac: formattedDateTime,
       }
     }))
   }
@@ -31,6 +36,7 @@ export default function Jugadores() {
   }
   const onNuevo = (jugador) => {
     setJugador(jugador)
+    console.log(jugador)
     setAction('N')
   }
   const onCancelar = () => {

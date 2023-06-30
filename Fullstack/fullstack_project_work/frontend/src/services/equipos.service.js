@@ -2,6 +2,7 @@ import axios from "axios";
 
 const url = "http://localhost:4000/api/equipos";
 
+
 async function getEquipos(filtro) {
     let response = [];
     try {
@@ -45,7 +46,8 @@ async function saveEquipos(payload) {
     let response = [];
     if(payload.IdEquipo){
         try {
-            response = await axios.put(url, payload);
+            response = await axios.put(`${url}/${payload.IdEquipo}`, payload);
+            console.log(response)
             return response;
         } catch (error) {
             console.error(error)
@@ -62,4 +64,4 @@ async function saveEquipos(payload) {
     }
 }
 
-export { getEquipos,getEquiposPorId, deleteEquipos, saveEquipos}
+export { getEquipos,getEquiposPorId, deleteEquipos, saveEquipos };
